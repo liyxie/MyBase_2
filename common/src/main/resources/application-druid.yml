@@ -45,7 +45,7 @@ spring:
       time-between-eviction-runs-millis: 60000
       # 检测连接有效的SQL
       # 为空则test-while-idle、test-on-borrow、test-on-return配置失效
-      validation-query: SELECT 1
+#      validation-query: SELECT 1
       # 检测连接是否有效的超时时间
       validation-query-timeout: 1
       stat-view-servlet:

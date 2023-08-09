@@ -4,14 +4,14 @@ import com.liy.common.api.ResultCode;
 import com.liy.common.domain.AjaxResult;
 import com.liy.common.domain.Page;
 import com.liy.common.util.StringUtils;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * @Author LiY
  * 通用Controller
  */
 
-//@Slf4j
+@Component
 public class BaseController {
 
     /**
@@ -25,11 +25,16 @@ public class BaseController {
     }
 
     public AjaxResult toSuccess(String msg){
+        System.out.println("msg:"+msg);
         return AjaxResult.success(msg);
     }
 
     public AjaxResult toSuccess(int code, String msg){
         return AjaxResult.success(code, msg);
+    }
+
+    public AjaxResult toSuccess(String dataName, Object data) {
+        return toSuccess().put(dataName,data);
     }
 
     public AjaxResult toError(){
@@ -60,11 +65,12 @@ public class BaseController {
         return result ? toSuccess() : toError();
     }
 
-    public AjaxResult toAjaxResult(Object data){
-        return StringUtils.isNotNull(data) ? toSuccess() : toSuccess(ResultCode.NO_CONTENT.getCode(),ResultCode.NO_CONTENT.getMessage());
+    public AjaxResult toAjaxResult(String dataName, Object data){
+        return StringUtils.isNotNull(data) ? toSuccess(dataName, data) : toSuccess(ResultCode.NO_CONTENT.getCode(),ResultCode.NO_CONTENT.getMessage());
     }
 
+
     public AjaxResult toAjaxResult(Page<?> page){
-        return toAjaxResult(page.getRecords());
+        return toAjaxResult("pageData", page.getRecords());
     }
 }

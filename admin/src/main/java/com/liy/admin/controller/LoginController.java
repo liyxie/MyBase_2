@@ -2,8 +2,10 @@ package com.liy.admin.controller;
 
 import com.liy.common.domain.AjaxResult;
 import com.liy.common.domain.dto.LoginUserDto;
+import com.liy.common.domain.vo.UserVo;
 import com.liy.common.util.Base64;
 import com.liy.system.service.LoginService;
+import com.liy.system.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,9 @@ public class LoginController extends BaseController{
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * @description: 获取验证码图片
@@ -69,15 +74,17 @@ public class LoginController extends BaseController{
     @Operation(summary = "用户登录", description = "登录成功返回token")
     public AjaxResult login(@Validated @RequestBody LoginUserDto loginUserDto){
         log.info("loginUserDto:   "+loginUserDto.toString());
+
         String token = loginService.login(loginUserDto.getUserName(), loginUserDto.getPassword(), loginUserDto.getUuid(), loginUserDto.getCode());
-        return toSuccess();
+        log.info(token);
+        return toSuccess().put("token",token);
     }
 
     @GetMapping("/info")
     @Operation(summary = "登录成功返回用户信息")
     public AjaxResult info(){
-
-        return toSuccess();
+        UserVo userVo = userService.getUserInfo();
+        return toAjaxResult("userInfo", userVo);
     }
 
     @GetMapping("/routers")

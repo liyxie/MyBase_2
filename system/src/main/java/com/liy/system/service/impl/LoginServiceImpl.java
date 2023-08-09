@@ -96,13 +96,11 @@ public class LoginServiceImpl implements LoginService {
                 log.info(e.getMessage());
             }
         }
-
-
         if(Objects.isNull(authentication)){
             throw new RuntimeException("登录失败");
         }
 
-        log.info("authentication   :  " + authentication.toString());
+//        log.info("authentication   :  " + authentication.toString());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
 //        AuthenticationContextHolder.clearContext();

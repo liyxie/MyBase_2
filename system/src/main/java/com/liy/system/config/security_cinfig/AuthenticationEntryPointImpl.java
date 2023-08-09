@@ -3,6 +3,7 @@ package com.liy.system.config.security_cinfig;
 import com.alibaba.fastjson2.JSON;
 import com.liy.common.api.ResultCode;
 import com.liy.common.domain.AjaxResult;
+import com.liy.common.domain.LoginUserPoJo;
 import com.liy.common.util.WebUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,10 +27,12 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, S
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
     {
+        String error = authException.getMessage();
         int code = ResultCode.UNAUTHORIZED.getCode();
 //        String msg = StringUtils.format("请求访问：{}，认证失败，无法访问系统资源", request.getRequestURI());
-        String msg = "请求访问：{"+ request.getRequestURI() +"}，认证失败，无法访问系统资源";
+        String msg = "请求访问：{"+ request.getRequestURI() +"}，认证失败，无法访问系统资源\n" +
+                "Error : "+ error;
         // 返回客户端错误
-        WebUtil.renderString(response, JSON.toJSONString(AjaxResult.error(ResultCode.UNAUTHORIZED.getCode(), msg)));
+        WebUtil.renderString(response, JSON.toJSONString(AjaxResult.error(code, msg)));
     }
 }

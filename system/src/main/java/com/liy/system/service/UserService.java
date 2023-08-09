@@ -18,4 +18,20 @@ public interface UserService extends IService<UserPo> {
      * @return:
      **/
     Page<UserVo> listPageBy(UserPageDto userPageDto, Integer pageNum, Integer pageSize);
+
+    /**
+     * @description: 获取当前登录用户信息
+     * @author: liy
+     * @param:
+     * @return:
+     **/
+    UserVo getUserInfo();
+
+    /**
+     * @description: 根据id批量删除用户
+     * @author: liy
+     * @param:
+     * @return:
+     **/
+    void removeBatchByIds(Long[] ids);
 }

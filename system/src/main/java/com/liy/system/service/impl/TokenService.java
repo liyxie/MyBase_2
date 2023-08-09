@@ -8,22 +8,29 @@ import com.liy.common.util.StringUtils;
 import com.liy.common.util.uuidUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import io.jsonwebtoken.Claims;
+
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @Author LiY
  * token服务
  */
 
-//@PropertySource(value = "classpath:application-system.yml")
 @Service
+@Slf4j
 public class TokenService {
 
     // 令牌自定义标识
@@ -38,6 +45,8 @@ public class TokenService {
     @Value("${token.expireTime}")
     private int expireTime;
 
+    private Key JwtKey;
+
     protected static final long MILLIS_SECOND = 1000;
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
@@ -46,6 +55,29 @@ public class TokenService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @PostConstruct
+    public void init(){
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+
+        // 将字节数组转换为64字节的密钥
+        byte[] keyBytes256 = new byte[64];
+        System.arraycopy(keyBytes, 0, keyBytes256, 0, Math.min(keyBytes.length, 64));
+
+        // 使用 SecretKeySpec 创建密钥
+        this.JwtKey = new SecretKeySpec(keyBytes256, SignatureAlgorithm.HS512.getJcaName());
+    }
+
+
+    /**
+     * @description: 生成密钥
+     * @author: liy
+     * @param:
+     * @return:
+     **/
+    public Key getKey(){
+        return JwtKey;
+    }
 
     /**
      * 获取用户身份信息
@@ -69,6 +101,7 @@ public class TokenService {
             }
             catch (Exception e)
             {
+                log.info(e.getMessage());
             }
         }
         return null;
@@ -170,7 +203,9 @@ public class TokenService {
     {
         String token = Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .signWith(getKey(), SignatureAlgorithm.HS512)
+//                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
         return token;
     }
 
@@ -180,10 +215,11 @@ public class TokenService {
      * @param token 令牌
      * @return 数据声明
      */
-    private Claims parseToken(String token)
+    public Claims parseToken(String token)
     {
-        return Jwts.parser()
-                .setSigningKey(secret)
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

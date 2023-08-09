@@ -49,7 +49,7 @@ public class UserController extends BaseController{
         //检查用户信息是否重复：userName、nickName、email、phonenumber
 
         //插入用户
-
+//        userService.add(userDto);
         return toSuccess();
 
     }
@@ -57,7 +57,7 @@ public class UserController extends BaseController{
     @Operation(summary = "批量删除用户的信息")
     @DeleteMapping("{ids}")
     AjaxResult delete(@PathVariable Long[] ids){
-
+        userService.removeBatchByIds(ids);
         return toSuccess();
     }
 
@@ -99,7 +99,7 @@ public class UserController extends BaseController{
     AjaxResult getItem(@PathVariable Long id){
 
         UserVo userVo = null;
-        return toAjaxResult(userVo);
+        return toAjaxResult("userVo", userVo);
     }
 
     @Operation(summary = "修改指定用户信息")

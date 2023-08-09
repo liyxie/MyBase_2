@@ -1,5 +1,6 @@
-package com.liy.admin.controller;
+package com.liy.admin;
 
+import com.liy.admin.controller.BaseController;
 
 /**
  * @Author LiY
@@ -9,7 +10,7 @@ package com.liy.admin.controller;
 public class testController extends BaseController{
 
     public String ll(){
-//        toSuccess();
+        toSuccess();
         return null;
     }
 

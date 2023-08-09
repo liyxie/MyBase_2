@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import com.liy.system.util.SecurityUtils;
  * JWT 认证过滤器
  */
 
+@Slf4j
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -36,10 +38,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         logger.info("请求路径:" + uri);
 
         LoginUser loginUser = tokenService.getLoginUser(request);
+        log.info("LoginUser+ :" + loginUser);
         if (StringUtils.isNotNull(loginUser) && StringUtils.isNull(SecurityUtils.getAuthentication()))
         {
             // 检查令牌有效期
             tokenService.verifyToken(loginUser);
+
+            log.info("LoginUser+ :" + loginUser);
+
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

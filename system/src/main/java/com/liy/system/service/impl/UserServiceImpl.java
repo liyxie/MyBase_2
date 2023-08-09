@@ -8,11 +8,19 @@ import com.liy.common.domain.dto.UserPageDto;
 import com.liy.common.domain.po.UserPo;
 import com.liy.common.domain.vo.UserVo;
 import com.liy.common.util.StringUtils;
+import com.liy.system.domain.LoginUser;
+import com.liy.system.enums.UserStatus;
 import com.liy.system.mapper.UserMapper;
 import com.liy.system.service.UserService;
+import com.liy.system.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -52,5 +60,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPo> implements 
         userVoPage.setRecords(userPoPage.getRecords().stream().map(UserMapMapper.INSTANCE::toVo).collect(Collectors.toList()));
 
         return userVoPage;
+    }
+
+    @Override
+    public UserVo getUserInfo() {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        UserVo userVo = UserMapMapper.INSTANCE.toVo(loginUser.getUser());
+        if(Objects.isNull(userVo)){
+            throw new RuntimeException("用户登录信息错误");
+        }
+        return userVo;
+    }
+
+    @Override
+    public void removeBatchByIds(Long[] ids) {
+        List<Long> userIds = Arrays.asList(ids);
+        //更改用户状态
+        List<UserPo> userPos = userMapper.selectBatchIds(userIds);
+        for (UserPo userPo:userPos) {
+            userPo.setAvatar(UserStatus.DELETED.getCode());
+            userMapper.updateById(userPo);
+        }
+
     }
 }

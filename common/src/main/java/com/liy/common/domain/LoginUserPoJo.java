@@ -1,19 +1,27 @@
-package com.liy.common.domain.vo;
+package com.liy.common.domain;
 
-import lombok.Data;
+import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>
- * 用户信息表
- * </p>
  *
  * @author liy
  * @since 2023-07-05
+ * Security的UserDetails使用
+ * 存储缓存的用户信息
  */
-@Data
-public class UserVo {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class LoginUserPoJo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Long userId;
 
@@ -31,9 +39,7 @@ public class UserVo {
 
     private String sex;
 
-    private String avatar;
-
-//    private String status;
+    private String password;
 
     private String loginIp;
 

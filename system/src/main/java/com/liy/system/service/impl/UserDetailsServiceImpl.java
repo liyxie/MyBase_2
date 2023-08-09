@@ -2,16 +2,15 @@ package com.liy.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.liy.common.config.mapstruct_mapper.UserMapMapper;
+import com.liy.common.domain.LoginUserPoJo;
 import com.liy.system.domain.LoginUser;
 import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.po.UserPo;
 import com.liy.common.util.StringUtils;
 import com.liy.system.enums.UserStatus;
 import com.liy.system.service.UserService;
-import com.liy.system.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -54,12 +53,13 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserDetailsPa
 //        String rawPassword = authenticationManager.
 //        SecurityUtils.matchesPassword(,userPo.getPassword())
 
-        UserDto userDto = UserMapMapper.INSTANCE.toDto(userPo);
-        log.info("userDto :   "  + userDto.toString());
-        return createLoginUser(userDto);
+        LoginUserPoJo loginUserPoJo = UserMapMapper.INSTANCE.toLoginUserPoJo(userPo);
+
+        log.info("loginUserPoJo :   "  + loginUserPoJo.toString());
+        return createLoginUser(loginUserPoJo);
     }
 
-    public UserDetails createLoginUser(UserDto user)
+    public UserDetails createLoginUser(LoginUserPoJo user)
     {
 //        return new LoginUser(user.getUserId(), user.getDeptId(), user, permissionService.getMenuPermission(user));
         return new LoginUser(user.getUserId(), user.getDeptId(), user);

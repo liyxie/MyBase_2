@@ -1,6 +1,8 @@
 package com.liy.system.domain;
 
 
+import com.alibaba.fastjson2.annotation.JSONField;
+import com.liy.common.domain.LoginUserPoJo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,26 +75,26 @@ public class LoginUser implements UserDetails {
     /**
      * 用户信息
      */
-    private UserDto user;
+    private LoginUserPoJo user;
 
     public LoginUser()
     {
     }
 
-    public LoginUser(UserDto user, Set<String> permissions)
+    public LoginUser(LoginUserPoJo user, Set<String> permissions)
     {
         this.user = user;
         this.permissions = permissions;
     }
 
-    public LoginUser(Long userId, Long deptId, UserDto user)
+    public LoginUser(Long userId, Long deptId, LoginUserPoJo user)
     {
         this.userId = userId;
         this.deptId = deptId;
         this.user = user;
     }
 
-    public LoginUser(Long userId, Long deptId, UserDto user, Set<String> permissions)
+    public LoginUser(Long userId, Long deptId, LoginUserPoJo user, Set<String> permissions)
     {
         this.userId = userId;
         this.deptId = deptId;
@@ -100,6 +102,12 @@ public class LoginUser implements UserDetails {
         this.permissions = permissions;
     }
 
+    /**
+     * @description: 权限
+     * @author: liy
+     * @param:
+     * @return:
+     **/
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -107,7 +115,7 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
@@ -121,6 +129,7 @@ public class LoginUser implements UserDetails {
      * @param:
      * @return:
      **/
+    @JSONField(serialize = false)
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -132,6 +141,7 @@ public class LoginUser implements UserDetails {
      * @param:
      * @return:
      **/
+    @JSONField(serialize = false)
     @Override
     public boolean isAccountNonLocked() {
         return true;
@@ -143,6 +153,7 @@ public class LoginUser implements UserDetails {
      * @param:
      * @return:
      **/
+    @JSONField(serialize = false)
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -153,6 +164,7 @@ public class LoginUser implements UserDetails {
      * @param:
      * @return:
      **/
+    @JSONField(serialize = false)
     @Override
     public boolean isEnabled() {
         return true;
