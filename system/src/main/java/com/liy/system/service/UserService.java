@@ -2,6 +2,7 @@ package com.liy.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liy.common.domain.Page;
+import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.dto.UserPageDto;
 import com.liy.common.domain.po.UserPo;
 import com.liy.common.domain.vo.UserVo;
@@ -34,4 +35,19 @@ public interface UserService extends IService<UserPo> {
      * @return:
      **/
     void removeBatchByIds(Long[] ids);
+
+    /**
+     * @description: 改变用户状态
+     * @author: liy
+     * @param:
+     * @return:
+     **/
+    Integer changeStatus(UserDto userDto);
+    /**
+     * @description: 修改用户信息
+     * @author: liy
+     * @param:
+     * @return:
+     **/
+    Integer updateUserDto(UserDto userDto);
 }

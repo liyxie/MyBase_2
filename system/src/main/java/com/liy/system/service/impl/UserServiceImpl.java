@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.liy.common.domain.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liy.common.config.mapstruct_mapper.UserMapMapper;
+import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.dto.UserPageDto;
 import com.liy.common.domain.po.UserPo;
 import com.liy.common.domain.vo.UserVo;
@@ -81,6 +82,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPo> implements 
             userPo.setAvatar(UserStatus.DELETED.getCode());
             userMapper.updateById(userPo);
         }
+    }
 
+    @Override
+    public Integer changeStatus(UserDto userDto) {
+        Long id = userDto.getUserId();
+        String status = userDto.getStatus();
+
+        LambdaQueryWrapper<UserPo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserPo::getUserId, id);
+        UserPo userPo = userMapper.selectById(wrapper);
+
+        userPo.setStatus(status);
+
+        return userMapper.updateById(userPo);
+    }
+
+    @Override
+    public Integer updateUserDto(UserDto userDto) {
+
+        Long id = userDto.getUserId();
+        LambdaQueryWrapper<UserPo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserPo::getUserId,id);
+        UserPo userPo = userMapper.selectOne(queryWrapper);
+
+
+        return null;
     }
 }

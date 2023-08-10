@@ -64,8 +64,8 @@ public class UserController extends BaseController{
     @Operation(summary = "用户状态修改,停用/恢复")
     @PutMapping("/changeStatus")
     AjaxResult changeStatus(@RequestBody UserDto userDto){
-
-        return toSuccess();
+        Integer i = userService.changeStatus(userDto);
+        return toAjaxResult(i);
     }
 
     @Operation(summary = "重置密码")
@@ -105,8 +105,8 @@ public class UserController extends BaseController{
     @Operation(summary = "修改指定用户信息")
     @PutMapping()
     AjaxResult edit(@RequestBody UserDto userDto){
-
-        return toAjaxResult(1);
+        Integer i = userService.updateUserDto(userDto);
+        return toAjaxResult(i);
     }
 
 

@@ -19,7 +19,6 @@
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-
         <springdoc.version>2.0.4</springdoc.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <kaptcha.version>2.3.3</kaptcha.version>
