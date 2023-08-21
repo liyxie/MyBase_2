@@ -13,7 +13,7 @@ public class GeneratorMySQL {
     /**
      * 数据库连接url
      */
-    public static final String URL = "jdbc:mysql://8.134.121.204/db_tag_goods";
+    public static final String URL = "jdbc:mysql://8.134.121.204/MyBase_db";
     /**
      * 数据库 用户名
      */
@@ -42,7 +42,7 @@ public class GeneratorMySQL {
     /**
      * 要生成的表
      */
-    public static final String[] TABLES = {"tag"};
+    public static final String[] TABLES = {"sys_role"};
 
 
     /**

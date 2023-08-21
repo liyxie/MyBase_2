@@ -5,6 +5,7 @@ import com.liy.common.domain.dto.LoginUserDto;
 import com.liy.common.domain.vo.UserVo;
 import com.liy.common.util.Base64;
 import com.liy.system.service.LoginService;
+import com.liy.system.service.RoleService;
 import com.liy.system.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +18,7 @@ import com.liy.common.util.uuidUtil;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Set;
 
 
 /**
@@ -35,6 +37,9 @@ public class LoginController extends BaseController{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     /**
      * @description: 获取验证码图片
@@ -83,8 +88,18 @@ public class LoginController extends BaseController{
     @GetMapping("/info")
     @Operation(summary = "登录成功返回用户信息")
     public AjaxResult info(){
+
+        // 用户信息
         UserVo userVo = userService.getUserInfo();
-        return toAjaxResult("userInfo", userVo);
+        AjaxResult result = toAjaxResult("userInfo", userVo);
+        // 角色信息
+        Set<String> roles = roleService.getRoleByUser(userVo);
+        // 权限信息
+
+
+
+
+        return result;
     }
 
     @GetMapping("/routers")
