@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.liy.common.domain.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liy.common.config.mapstruct_mapper.UserMapMapper;
+import com.liy.common.domain.dto.NewUserDto;
 import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.dto.UserPageDto;
 import com.liy.common.domain.po.UserPo;
@@ -12,11 +13,13 @@ import com.liy.common.util.StringUtils;
 import com.liy.system.domain.LoginUser;
 import com.liy.system.enums.UserStatus;
 import com.liy.system.mapper.UserMapper;
+import com.liy.system.service.RoleService;
 import com.liy.system.service.UserService;
 import com.liy.system.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +42,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPo> implements 
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public Page<UserVo> listPageBy(UserPageDto userPageDto, Integer pageNum, Integer pageSize) {
@@ -108,5 +114,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPo> implements 
 
 
         return null;
+    }
+
+    /**
+     * @description: 增加用户
+     * @author: liy
+     * @param:
+     * @return:
+     **/
+    @Override
+    @Transactional
+    public Integer add(NewUserDto newUserDto) {
+        UserPo userPo = UserMapMapper.INSTANCE.toPo(newUserDto);
+
+        // 密码加密
+        userPo.setPassword(SecurityUtils.encryptPassword(userPo.getPassword()));
+
+        // 其他信息补充
+        userPo.setCreateBy(getUserInfo().getUserName());
+
+        int i = userMapper.insert(userPo);
+
+        // 部门关系
+
+
+        // 角色关系
+        roleService.insertUserRole(userPo.getUserId(), newUserDto.getRoleId());
+
+        return i;
     }
 }

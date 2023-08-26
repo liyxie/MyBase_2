@@ -1,6 +1,7 @@
 package com.liy.common.config.mapstruct_mapper;
 
 import com.liy.common.domain.LoginUserPoJo;
+import com.liy.common.domain.dto.NewUserDto;
 import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.po.UserPo;
 import com.liy.common.domain.vo.UserVo;
@@ -24,5 +25,7 @@ public interface UserMapMapper {
     UserDto toDto(UserPo userPo);
 
     LoginUserPoJo toLoginUserPoJo(UserPo userPo);
+
+    UserPo toPo(NewUserDto newUserDto);
 
 }

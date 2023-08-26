@@ -2,6 +2,7 @@ package com.liy.admin.controller;
 
 import com.liy.common.domain.Page;
 import com.liy.common.domain.AjaxResult;
+import com.liy.common.domain.dto.NewUserDto;
 import com.liy.common.domain.dto.PageDto;
 import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.dto.UserPageDto;
@@ -45,12 +46,12 @@ public class UserController extends BaseController{
      **/
     @Operation(summary = "创建用户")
     @PostMapping
-    AjaxResult add(@RequestBody UserDto userDto){
+    AjaxResult add(@RequestBody NewUserDto newUserDto){
         //检查用户信息是否重复：userName、nickName、email、phonenumber
 
         //插入用户
-//        userService.add(userDto);
-        return toSuccess();
+        Integer i = userService.add(newUserDto);
+        return toAjaxResult(i);
 
     }
 
@@ -87,8 +88,9 @@ public class UserController extends BaseController{
     })
     @ApiResponse(responseCode = "AjaxResult", description = "封装对象")
     @GetMapping("/list")
-    AjaxResult list(UserPageDto userPageDto, @Validated PageDto pageDto){
+    AjaxResult list(UserPageDto userPageDto,@Validated PageDto pageDto){
         log.info(pageDto.toString());
+
         Page<UserVo> userVoPage = userService.listPageBy(userPageDto, pageDto.getPageNum(), pageDto.getPageSize());
 
         return toSuccess().put("users",userVoPage);

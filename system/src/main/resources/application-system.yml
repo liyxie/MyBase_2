@@ -10,4 +10,4 @@ token:
   # 令牌密钥
   secret: Liy200110
   # 令牌存活时间：分钟
-  expireTime: 30
+  expireTime: 60

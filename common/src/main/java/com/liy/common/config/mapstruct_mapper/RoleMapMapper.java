@@ -1,5 +1,6 @@
 package com.liy.common.config.mapstruct_mapper;
 
+import com.liy.common.domain.dto.NewRoleDto;
 import com.liy.common.domain.po.RolePo;
 import com.liy.common.domain.vo.RoleVo;
 import org.mapstruct.Mapper;
@@ -16,6 +17,8 @@ public interface RoleMapMapper {
     RoleMapMapper INSTANCE = Mappers.getMapper(RoleMapMapper.class);
 
     RoleVo toRoleVo(RolePo rolePo);
+
+    RolePo toRolePo(NewRoleDto newRoleDto);
 
 
 }

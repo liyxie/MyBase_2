@@ -9,7 +9,6 @@ import com.liy.system.domain.LoginUser;
 import com.liy.common.util.StringUtils;
 import com.liy.system.service.LoginService;
 import jakarta.annotation.Resource;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

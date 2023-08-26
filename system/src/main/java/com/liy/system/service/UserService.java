@@ -2,6 +2,7 @@ package com.liy.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liy.common.domain.Page;
+import com.liy.common.domain.dto.NewUserDto;
 import com.liy.common.domain.dto.UserDto;
 import com.liy.common.domain.dto.UserPageDto;
 import com.liy.common.domain.po.UserPo;
@@ -50,4 +51,6 @@ public interface UserService extends IService<UserPo> {
      * @return:
      **/
     Integer updateUserDto(UserDto userDto);
+
+    Integer add(NewUserDto newUserDto);
 }

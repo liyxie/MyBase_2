@@ -94,6 +94,7 @@ public class LoginController extends BaseController{
         AjaxResult result = toAjaxResult("userInfo", userVo);
         // 角色信息
         Set<String> roles = roleService.getRoleByUser(userVo);
+        result.put("roles", roles);
         // 权限信息
 
 

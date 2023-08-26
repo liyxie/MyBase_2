@@ -1,20 +1,19 @@
 package com.liy.common.domain.dto;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * @Author LiY
  * 分页数据参数
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
+@Accessors(chain = true)
+@Schema(name = "UserPo", description = "用户信息")
 public class PageDto {
 
     @Schema(title = "第几页，默认1")
